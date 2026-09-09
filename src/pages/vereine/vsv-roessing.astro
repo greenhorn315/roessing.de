@@ -1,0 +1,463 @@
+---
+import sitemap from 'sitemap-ext:config'
+import Layout from '@levino/shipyard-base/layouts/Page.astro'
+import {
+  gruppenDerSparte,
+  gruppenFuerZielgruppe,
+  gruppenOhneUebungsleitung,
+  kennzahlen,
+  sparten,
+  wochenplan,
+  zielgruppen,
+} from '@/data/vsv-sparten'
+
+// Arbeitsstand mit ungeprüften Daten und Klarnamen: nicht in die Sitemap
+sitemap(false)
+
+const metadata = {
+  title: 'Sportangebot des VSV Rössing',
+  description:
+    'Arbeitsstand: alle Sparten, Trainingsgruppen und Übungsleitungen des VSV Rössing, sortiert nach Zielgruppen.',
+}
+
+const zahlen = kennzahlen()
+const offeneGruppen = gruppenOhneUebungsleitung()
+const plan = wochenplan()
+
+const kacheln = [
+  { wert: zahlen.sparten, name: 'Sparten' },
+  { wert: zahlen.gruppen, name: 'Trainingsgruppen' },
+  { wert: zahlen.uebungsleiter, name: 'Übungsleiter' },
+  { wert: zahlen.kinderangebote, name: 'Angebote für Kinder' },
+  { wert: zahlen.trainingstage, name: 'Trainingstage pro Woche' },
+  { wert: zahlen.ohneUebungsleitung, name: 'unbesetzte Gruppen' },
+]
+
+const pruefliste = [
+  {
+    stufe: 'Sperre',
+    titel: 'Datenstand bestätigen',
+    text: 'Die Liste ist von 2022. Gruppen können weggefallen, Zeiten verschoben und Übungsleitungen gewechselt sein. Jede Spartenleitung gibt ihre Zeilen frei, bevor etwas öffentlich wird.',
+  },
+  {
+    stufe: 'Sperre',
+    titel: 'Einverständnis für Namen, Kontakt und Fotos',
+    text: 'Namen, Telefonnummern, E-Mail-Adressen und Porträts gehören nur mit Zustimmung der Betroffenen auf die Seite. Sinnvoll ist eine Sammelabfrage: Name ja oder nein, Foto ja oder nein, Kontakt über Formular oder direkt.',
+  },
+  {
+    stufe: 'Sperre',
+    titel: 'Schreibweise der Namen prüfen',
+    text: 'Die Namen stammen aus einer abgetippten Liste. Vor der Veröffentlichung Buchstabe für Buchstabe abgleichen.',
+  },
+  {
+    stufe: 'Hoch',
+    titel: 'Spartenleitungen benennen',
+    text: 'Nur Dart nennt eine Spartenleitung. Für die anderen vier Sparten fehlt die Ebene zwischen Vorstand und Übungsleitung, und damit der Ansprechpartner auf jeder Spartenseite.',
+  },
+  {
+    stufe: 'Hoch',
+    titel: 'Zwei Gruppen ohne Übungsleitung',
+    text: 'Yoga und Fußball Ü32 haben keine Leitung eingetragen. Entweder ist die Stelle inzwischen besetzt, oder die Gruppe gibt es nicht mehr, oder die Website sucht dort offen nach Verstärkung.',
+  },
+  {
+    stufe: 'Hoch',
+    titel: 'Trainingsorte ergänzen',
+    text: 'Die Liste nennt nur beiläufig Sporthalle, Sportplatz Nordstemmen und SLZ Hannover. Jede Gruppe braucht einen Ort mit Adresse.',
+  },
+  {
+    stufe: 'Mittel',
+    titel: 'Altersangaben vervollständigen',
+    text: 'Eltern suchen nach Jahren, nicht nach G-, F- und E-Jugend. Beim Turnen stehen Altersgrenzen, beim Fußball nur Buchstaben, bei der Leichtathletik teils nichts.',
+  },
+  {
+    stufe: 'Später',
+    titel: 'Beitrag und Schnuppern',
+    text: 'Beides fehlt in der Liste und ist auf einer Website die häufigste Frage: Was kostet es, und darf ich einmal mitmachen, ohne einzutreten?',
+  },
+  {
+    stufe: 'Später',
+    titel: 'Lücken im Angebot benennen',
+    text: 'Sichtbar fehlen Angebote für Ältere und für Jungen zwischen 11 und 16 außerhalb des Fußballs. Ein offener Hinweis wirkt besser als eine stille Lücke.',
+  },
+]
+
+const schritte = [
+  {
+    titel: 'Der Einstieg fragt nach der Person, nicht nach der Sparte',
+    text: 'Wer neu sucht, denkt „mein Kind ist vier“ und nicht „Leichtathletik“. Die erste Auswahl heißt deshalb Kinder, Jugendliche, Frauen, Männer, Alle. Die Sparten bleiben als zweiter Weg daneben stehen.',
+  },
+  {
+    titel: 'Eine Datenquelle für alle Ansichten',
+    text: 'Diese Seite liest bereits aus einer einzigen Datei. Tabelle, Zielgruppen und Wochenplan entstehen daraus automatisch, sodass niemand dieselbe Uhrzeit mehrfach pflegt. Der nächste Schritt ist eine Content-Collection mit Verweisen auf Orte und Personen, wie bei den Veranstaltungen.',
+  },
+  {
+    titel: 'Jedes Angebot beantwortet dieselben sechs Fragen',
+    text: 'Was, für wen, wann, wo, bei wem, wie komme ich rein. Fehlt eine Antwort, sieht man die Lücke sofort, statt sie hinter Fließtext zu verstecken.',
+  },
+  {
+    titel: 'Gesichter statt Kacheln',
+    text: 'Ein Porträt der Übungsleiterin neben ihrer Gruppe wirkt in einem Dorf mehr als jedes Stockfoto, weil man die Person am nächsten Tag beim Bäcker trifft. Wo ein Foto fehlt, lieber nichts als ein gekauftes Sportbild.',
+  },
+  {
+    titel: 'Ein Satz, der zum Mitmachen einlädt',
+    text: 'Jede Gruppe bekommt eine Zeile in eigener Sprache: für wen sie gedacht ist, wie ein Abend abläuft, ob man einfach kommen kann. Dieser Satz kommt von den Übungsleitungen, nicht aus der Tabelle.',
+  },
+]
+
+const stufenFarbe: Record<string, string> = {
+  Sperre: 'badge-error',
+  Hoch: 'badge-warning',
+  Mittel: 'badge-info',
+  Später: 'badge-ghost',
+}
+---
+
+<Layout
+  {...metadata}
+  customMetaTags={[{ name: 'robots', content: 'noindex, nofollow' }]}
+>
+  <div class="container mx-auto max-w-7xl space-y-16 px-4 py-16 sm:py-20">
+    <header class="max-w-3xl">
+      <p class="text-sm font-semibold uppercase tracking-wider text-primary">
+        Arbeitsstand
+      </p>
+      <h1
+        class="mt-2 text-4xl font-bold tracking-tight text-base-content sm:text-5xl"
+      >
+        Sportangebot des VSV Rössing
+      </h1>
+      <p class="mt-3 text-base-content/70">
+        Fünf Sparten, {zahlen.gruppen} Trainingsgruppen, {zahlen.uebungsleiter}
+        namentlich genannte Übungsleiterinnen und Übungsleiter. Diese Seite ordnet
+        die Übungsleiterliste so, wie Besucherinnen und Besucher suchen: nicht nach
+        Sparte, sondern nach „Was gibt es für mein Kind, für mich, für meinen
+        Mann?“
+      </p>
+    </header>
+
+    <div role="alert" class="alert alert-warning">
+      <div>
+        <h2 class="font-bold">Stand 2022, nicht veröffentlichen</h2>
+        <p class="text-sm">
+          Alle Angaben stammen aus der Übungsleiterliste von 2022 und sind
+          ungeprüft. Die Seite ist von der Suche ausgeschlossen und nicht
+          verlinkt, solange die Sparten die Daten nicht bestätigt haben und die
+          genannten Personen der Nennung nicht zugestimmt haben.
+        </p>
+      </div>
+    </div>
+
+    <section>
+      <h2 class="text-2xl font-bold text-base-content">Der Verein in Zahlen</h2>
+      <dl
+        class="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-box border border-base-300 bg-base-300 sm:grid-cols-3"
+      >
+        {
+          kacheln.map((kachel) => (
+            <div class="bg-base-100 p-5">
+              <dd class="text-3xl font-bold text-base-content">{kachel.wert}</dd>
+              <dt class="mt-1 text-sm text-base-content/60">{kachel.name}</dt>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-bold text-base-content">Organigramm</h2>
+      <p class="mt-1 text-base-content/70">
+        Verein, Sparte, Gruppe. Die Spartenleitung ist nur bei Dart benannt.
+      </p>
+
+      <div class="mt-8 flex flex-col items-center">
+        <div class="rounded-box border-2 border-base-content/20 bg-base-100 px-6 py-4 text-center">
+          <p class="text-xl font-bold text-base-content">VSV Rössing</p>
+          <p class="text-sm text-base-content/60">
+            Volkssportvereinigung von 1897
+          </p>
+        </div>
+        <div class="h-6 w-px bg-base-300"></div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        {
+          sparten.map((sparte) => {
+            const eigene = gruppenDerSparte(sparte.id)
+            return (
+              <div
+                class:list={[
+                  'card border border-base-300 border-t-4 bg-base-100 shadow-sm',
+                  sparte.akzent,
+                ]}
+              >
+                <div class="card-body justify-start gap-2 p-5">
+                  <h3 class="card-title text-lg">{sparte.name}</h3>
+                  <p class="grow-0 text-xs text-base-content/60">
+                    {eigene.length}{' '}
+                    {eigene.length === 1 ? 'Gruppe' : 'Gruppen'}
+                  </p>
+                  <ul class="space-y-1 text-sm text-base-content/80">
+                    {eigene.map((gruppe) => (
+                      <li>{gruppe.name}</li>
+                    ))}
+                  </ul>
+                  <p class="mt-auto grow-0 border-t border-base-300 pt-2 text-sm text-base-content/60">
+                    Spartenleitung:{' '}
+                    {sparte.spartenleitung ? (
+                      <span class="font-medium text-base-content">
+                        {sparte.spartenleitung}
+                      </span>
+                    ) : (
+                      <span class="font-medium text-warning">offen</span>
+                    )}
+                  </p>
+                </div>
+              </div>
+            )
+          })
+        }
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-bold text-base-content">Für wen ist was?</h2>
+      <p class="mt-1 text-base-content/70">
+        Der Blick, den die Website zuerst anbieten sollte.
+      </p>
+      <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {
+          zielgruppen.map((zielgruppe) => {
+            const passende = gruppenFuerZielgruppe(zielgruppe.id)
+            return (
+              <div class="card border border-base-300 bg-base-100">
+                <div class="card-body justify-start p-6">
+                  <h3 class="card-title text-lg">{zielgruppe.name}</h3>
+                  <p class="grow-0 text-xs uppercase tracking-wide text-base-content/50">
+                    {zielgruppe.spanne} · {passende.length} Angebote
+                  </p>
+                  <p class="mt-1 grow-0 text-sm text-base-content/70">
+                    {zielgruppe.einleitung}
+                  </p>
+                  <ul class="mt-3 space-y-2">
+                    {passende.map((gruppe) => (
+                      <li class="text-sm">
+                        <span class="font-medium text-base-content">
+                          {gruppe.name}
+                        </span>
+                        <span class="block text-base-content/60">
+                          {gruppe.tag} {gruppe.zeit} ·{' '}
+                          {gruppe.uebungsleiter.length > 0
+                            ? gruppe.uebungsleiter.join(', ')
+                            : 'Übungsleitung offen'}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )
+          })
+        }
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-bold text-base-content">Sparten im Detail</h2>
+      <p class="mt-1 text-base-content/70">
+        Alle {zahlen.gruppen} Gruppen mit Zeit, Zielgruppe und Übungsleitung.
+      </p>
+      <div class="mt-6 space-y-10">
+        {
+          sparten.map((sparte) => (
+            <div>
+              <h3
+                class:list={[
+                  'border-t-4 pt-2 text-xl font-bold text-base-content',
+                  sparte.akzent,
+                ]}
+              >
+                {sparte.name}
+              </h3>
+              <div class="mt-2 overflow-x-auto">
+                <table class="table table-zebra">
+                  <thead>
+                    <tr>
+                      <th>Gruppe</th>
+                      <th>Termin</th>
+                      <th>Merkmale</th>
+                      <th>Übungsleitung</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {gruppenDerSparte(sparte.id).map((gruppe) => (
+                      <tr>
+                        <td>
+                          <span class="font-medium">{gruppe.name}</span>
+                          {gruppe.hinweis && (
+                            <span class="block text-xs text-base-content/60">
+                              {gruppe.hinweis}
+                            </span>
+                          )}
+                          {gruppe.offeneFrage && (
+                            <span class="mt-1 block text-xs text-warning">
+                              Offen: {gruppe.offeneFrage}
+                            </span>
+                          )}
+                        </td>
+                        <td class="whitespace-nowrap">
+                          {gruppe.tag} {gruppe.zeit}
+                          {gruppe.zusatztermin && (
+                            <span class="block text-xs text-base-content/60">
+                              {gruppe.zusatztermin.hinweis}: {gruppe.zusatztermin.tag}{' '}
+                              {gruppe.zusatztermin.zeit}
+                            </span>
+                          )}
+                        </td>
+                        <td>
+                          {gruppe.merkmale.map((merkmal) => (
+                            <span class="badge badge-ghost badge-sm mr-1">
+                              {merkmal}
+                            </span>
+                          ))}
+                        </td>
+                        <td>
+                          {gruppe.uebungsleiter.length > 0 ? (
+                            gruppe.uebungsleiter.join(', ')
+                          ) : (
+                            <span class="text-warning">offen</span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-bold text-base-content">Die Woche im Verein</h2>
+      <p class="mt-1 text-base-content/70">
+        An {zahlen.trainingstage} Tagen ist etwas los, vom Donnerstagvormittag bis
+        zum Samstagnachmittag.
+      </p>
+      <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {
+          plan.map((tag) => (
+            <div class="card border border-base-300 bg-base-100">
+              <div class="card-body justify-start gap-3 p-5">
+                <h3 class="card-title text-base uppercase tracking-wide">
+                  {tag.name}
+                </h3>
+                <ul class="space-y-2">
+                  {tag.eintraege.map((eintrag) => {
+                    const sparte = sparten.find(
+                      (kandidat) => kandidat.id === eintrag.gruppe.sparte,
+                    )
+                    return (
+                      <li class="flex gap-3">
+                        <span
+                          class:list={[
+                            'mt-2 h-2 w-2 shrink-0 rounded-full',
+                            sparte?.marker,
+                          ]}
+                          aria-hidden="true"
+                        />
+                        <span class="text-sm">
+                          <span class="font-medium">{eintrag.gruppe.name}</span>
+                          <span class="block text-base-content/60">
+                            {eintrag.zeit}
+                            {eintrag.hinweis ? ` · ${eintrag.hinweis}` : ''} ·{' '}
+                            {eintrag.gruppe.uebungsleiter.length > 0
+                              ? eintrag.gruppe.uebungsleiter.join(', ')
+                              : 'Übungsleitung offen'}
+                          </span>
+                        </span>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-bold text-base-content">
+        Was vor der Veröffentlichung geklärt werden muss
+      </h2>
+      <p class="mt-1 text-base-content/70">
+        {pruefliste.length} Punkte, die die Liste offen lässt. Betroffen sind unter
+        anderem {offeneGruppen.map((gruppe) => gruppe.name).join(' und ')}.
+      </p>
+      <ul class="mt-6 divide-y divide-base-300 rounded-box border border-base-300">
+        {
+          pruefliste.map((punkt) => (
+            <li class="flex flex-col gap-1 p-5 sm:flex-row sm:gap-5">
+              <span
+                class:list={[
+                  'badge badge-sm shrink-0 sm:mt-1 sm:w-20',
+                  stufenFarbe[punkt.stufe],
+                ]}
+              >
+                {punkt.stufe}
+              </span>
+              <span>
+                <span class="font-semibold text-base-content">
+                  {punkt.titel}
+                </span>
+                <span class="mt-1 block text-sm text-base-content/70">
+                  {punkt.text}
+                </span>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-bold text-base-content">
+        So wird daraus eine Seite, die Leute in den Verein holt
+      </h2>
+      <ol class="mt-6 space-y-6">
+        {
+          schritte.map((schritt, index) => (
+            <li class="flex gap-5">
+              <span class="text-2xl font-bold text-primary tabular-nums">
+                {index + 1}
+              </span>
+              <span>
+                <span class="block font-semibold text-base-content">
+                  {schritt.titel}
+                </span>
+                <span class="mt-1 block text-base-content/70">
+                  {schritt.text}
+                </span>
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <footer class="border-t border-base-300 pt-6 text-sm text-base-content/60">
+      <p>
+        Quelle: Übungsleiterliste des VSV Rössing, Stand 2022, ungeprüft. Die
+        Altersangaben in Klammern zu den Fußball-Jugenden sind Erfahrungswerte
+        und stehen nicht in der Quelle. Der Verein im Netz:{' '}
+        <a
+          href="https://vsv-roessing.de"
+          rel="noopener noreferrer"
+          target="_blank"
+          class="link link-primary">vsv-roessing.de</a
+        >.
+      </p>
+    </footer>
+  </div>
+</Layout>
