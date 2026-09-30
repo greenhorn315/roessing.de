@@ -4,6 +4,7 @@ location: vsv-vereinsheim
 organizer: vsv
 description: Erstes Treffen der neuen Outdoor-Sparte im VSV Rössing – Kennenlernen, Ideen sammeln, Termine planen.
 name: Kennenlerntreffen der Outdoor-Sparte
+shortlink: jax
 ---
 
 Die Volkssportvereinigung von 1897 Rössing e.V. gründet eine neue Outdoor-Sparte – und lädt alle Interessierten zum ersten Kennenlerntreffen ein.
