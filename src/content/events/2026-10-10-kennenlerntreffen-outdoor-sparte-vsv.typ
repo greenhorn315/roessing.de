@@ -8,100 +8,73 @@
   fill: black,
   hyphenate: false,
 )
-#set par(leading: 0.75em)
+#set par(leading: 0.8em)
 
 #let accent = rgb("#1f4d2b")
 #let muted = rgb("#5a5a5a")
 
 // Kopf
 #align(center)[
-  #text(size: 11.5pt, weight: "semibold", tracking: 0.1em, fill: accent)[
+  #text(size: 12pt, weight: "semibold", tracking: 0.1em, fill: accent)[
     VSV RÖSSING VON 1897 · EINLADUNG
   ]
   #v(0.25cm)
-  #text(size: 33pt, weight: "black", tracking: -0.02em, fill: accent)[
+  #text(size: 38pt, weight: "black", tracking: -0.02em, fill: accent)[
     Neue \ Outdoor-Sparte
   ]
   #v(0.2cm)
-  #text(size: 17pt, weight: "medium")[
+  #text(size: 19pt, weight: "medium")[
     Kennenlerntreffen am Samstag, 10. Oktober
   ]
 ]
 
-#v(0.3cm)
+#v(0.4cm)
 #line(length: 100%, stroke: 2pt + accent)
-#v(0.35cm)
+#v(0.5cm)
 
-#text(size: 13pt)[
+#text(size: 14pt)[
   Wandern, Nordic Walking, Radtouren, Boßeln mit dem Bollerwagen – und das
   gesellige Beisammensein danach: Der VSV Rössing gründet eine Sparte für
   alles, was draußen Spaß macht. Rund 30 Leute haben sich schon eingetragen,
   jetzt treffen wir uns zum ersten Mal.
 ]
 
-#v(0.25cm)
+#v(0.35cm)
 
-#text(size: 13pt)[
+#text(size: 14pt)[
   *Mitmachen kann jede und jeder* – eine Vereinsmitgliedschaft ist für den
   Anfang nicht nötig.
 ]
 
-#v(0.35cm)
+#v(0.5cm)
 
 // Info-Block: nur Rahmen, kein Fuellton
 #block(
   width: 100%,
-  inset: 0.42cm,
+  inset: 0.55cm,
   radius: 0.15cm,
   stroke: 1pt + accent,
 )[
   #grid(
     columns: (auto, 1fr),
     column-gutter: 0.6cm,
-    row-gutter: 0.22cm,
-    text(size: 13.5pt, weight: "bold", fill: accent)[Wann],
-    text(size: 13.5pt)[Samstag, 10. Oktober 2026 · 15:00 Uhr],
-    text(size: 13.5pt, weight: "bold", fill: accent)[Wo],
-    text(size: 13.5pt)[VSV-Vereinsheim · Zum Klay 6 · Rössing],
-    text(size: 13.5pt, weight: "bold", fill: accent)[Für wen],
-    text(size: 13.5pt)[alle Interessierten · Eintritt frei],
-    text(size: 13.5pt, weight: "bold", fill: accent)[Dazu],
-    text(size: 13.5pt)[Kaffee und Kuchen],
+    row-gutter: 0.3cm,
+    text(size: 15pt, weight: "bold", fill: accent)[Wann],
+    text(size: 15pt)[Samstag, 10. Oktober 2026 · 15:00 Uhr],
+    text(size: 15pt, weight: "bold", fill: accent)[Wo],
+    text(size: 15pt)[VSV-Vereinsheim · Zum Klay 6 · Rössing],
+    text(size: 15pt, weight: "bold", fill: accent)[Für wen],
+    text(size: 15pt)[alle Interessierten · Eintritt frei],
   )
 ]
 
-#v(0.35cm)
+#v(0.5cm)
 
-#text(size: 13pt)[
+#text(size: 14pt)[
   Erste Ideen liegen auf dem Tisch: eine Wanderung durch den Ith, geführte
   Radtouren mit Übernachtung, eine mehrtägige Fahrt Richtung Detmold. Was
   daraus wird, legen wir gemeinsam fest – *deine Vorschläge sind erwünscht.*
 ]
-
-#v(0.35cm)
-
-// QR-Block: fuer Leute gedacht, die ein Handy benutzen, aber mit QR-Codes
-// wenig zu tun hatten. Deshalb steht die Anleitung dabei.
-#grid(
-  columns: (1fr, auto),
-  column-gutter: 0.7cm,
-  align: (left + horizon, center + horizon),
-  [
-    #text(size: 27pt, weight: "black", fill: accent)[rössing.de/jax]
-    #v(0.15cm)
-    #text(size: 12.5pt)[
-      Halte die Kamera deines Handys auf das schwarze Viereck – die Seite mit
-      allen Angaben öffnet sich von selbst. Abtippen geht genauso.
-    ]
-  ],
-  box(
-    width: 3.5cm,
-    height: 3.5cm,
-    stroke: 0.5pt + muted,
-    inset: 0.12cm,
-    image("2026-10-10-kennenlerntreffen-outdoor-sparte-vsv-qr.svg", width: 100%),
-  ),
-)
 
 #v(1fr)
 
@@ -109,7 +82,7 @@
 #line(length: 100%, stroke: 0.5pt + muted)
 #v(0.2cm)
 #align(center)[
-  #text(size: 12pt, weight: "semibold")[
+  #text(size: 13pt, weight: "semibold")[
     Eine kurze Anmeldung hilft beim Planen \
     Michael Horn · Spartenleitung · 0173 6232019 · wandern\@vsv-roessing.de
   ]

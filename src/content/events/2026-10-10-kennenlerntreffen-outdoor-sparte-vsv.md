@@ -11,7 +11,7 @@ Die Volkssportvereinigung von 1897 Rössing e.V. gründet eine neue Outdoor-Spar
 
 Die Sparte soll alles bündeln, was draußen Spaß macht: Wanderungen, Nordic-Walking-Runden, Radwandertouren, Boßeln mit dem Bollerwagen – und das gesellige Beisammensein danach. Aus dem Kreis der Interessierten liegen bereits Ideen auf dem Tisch: eine Wanderung durch den Ith mit Einkehr oder Grillen an der Sporthalle, geführte Radwanderungen mit Übernachtung sowie eine mehrtägige Radtour nach Detmold und Paderborn.
 
-Beim Treffen geht es ums Kennenlernen, um diese Vorschläge und um die ersten festen Termine. Für Kaffee und Kuchen ist gesorgt.
+Beim Treffen geht es ums Kennenlernen, um diese Vorschläge und um die ersten festen Termine.
 
 ## Details
 
